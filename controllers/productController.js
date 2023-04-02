@@ -6,6 +6,7 @@ function getVendorID(id){
     id = this.vend_id;
 }
 
+
 //@desc     to create new product
 //@route    /vendors/addProduct
 exports.createProduct = async(req, res)=>{
