@@ -1,12 +1,13 @@
 const express =  require('express');
 const router = express.Router();
 
+//@desc     logout user
 router.get('/', (req, res)=>{
     
     req.session.destroy();
-    res.clearCookie();
     res.redirect('/login');
 
 })
+
 
 module.exports = router;

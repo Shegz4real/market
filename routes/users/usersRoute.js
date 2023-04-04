@@ -7,7 +7,7 @@ router.get('/', (req, res)=>{
     res.send("this is the user route");
 });
 
-router.get('/:id', userController.getProfileInfo);
+router.get('/profile', userController.getProfileInfo);
 
 module.exports = router;
 

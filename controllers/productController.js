@@ -1,10 +1,6 @@
 const Prod = require('../models/products/productModel');
 
-var vend_id;
 
-function getVendorID(id){
-    id = this.vend_id;
-}
 
 
 //@desc     to create new product

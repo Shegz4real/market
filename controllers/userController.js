@@ -1,8 +1,22 @@
 const bodyParser = require("body-parser");
 const User = require("../models/users/usersModel");
 
-//function that stores the user id of the person currently logged in
-var user_id;
+
+ 
+//function that verifies a user already exist
+async function userExist(email){
+
+    try{
+        const user = await User.findOne({email});
+        console.log(user);
+        return !!user;
+    }catch(err){
+
+        console.log(err);
+        return false;
+    }
+}
+
  
 //@desc    admin to view the list of users
 //@route   admin/users/
@@ -14,11 +28,22 @@ exports.findUser = async(req, res)=>{
 //@desc     user signup controller
 //@route    /signup
 exports.createUser = async(req, res)=>{
+    
+    try{
 
-    const user = new User(req.body);
-    await user.save();
-    res.cookie('email', req.body.email, {secure : false});// to be changed to email 
-    res.send({data:user});
+        const user = new User(req.body);
+        console.log(userExist(user.email));
+
+        await user.save();
+        req.session.user = user;
+        req.session.authorized = true;
+        res.send({data:user});
+       
+    }catch(err){
+        console.log(err);
+    }
+        
+   
     
 }
 
@@ -31,7 +56,7 @@ exports.loginUser = async(req, res)=>{
     
     try{
         const user = await User.findOne({email});
-        
+
         if(!user){
             return res.redirect('/login');
         
@@ -40,13 +65,10 @@ exports.loginUser = async(req, res)=>{
             return res.status(401).redirect('/login');
         }
 
-        res.cookie('email', user.email);
         req.session.user = user;
         req.session.authorized = true;
-         
-        this.user_id = user.id;
-        res.send('logged in');
-        console.log(user_id);
+        res.redirect('/');
+        
 
     }catch(err){
         console.log(err);
@@ -55,18 +77,22 @@ exports.loginUser = async(req, res)=>{
 } 
 
 //@desc  get items tp be displayed on the user profilePage
-//@desc  /users/:id
+//@desc  /users/profile
 
 exports.getProfileInfo = async(req, res)=>{
     
-    const {name, email} = req.body;
-
+    
+    
     try{
-
-        const user =  await User.findById(req.params.id);
+        
+        if(!req.session.authorized){    //validate if the user is signed in
+            res.redirect('/login')
+        }
+        const user =  await User.findById(req.session.user._id);//pass the user id to pull out info
         console.log(user.name);
-        res.send(`name: ${user.name} \n email: ${user.email}`)
-
+        res.send(`name: ${user.name} \n email: ${user.email}`);
+                
+                
     }catch(err){
         console.log(err);
     }
