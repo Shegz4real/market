@@ -34,9 +34,8 @@ app.use('/logis', logis);
 app.use('/logout', logout)
 
 
-app.get('/', (req,res)=>{
+app.get('/', (req, res)=>{
     res.send('market');
-    
 });
 
 //CONNECT DATABASE 
