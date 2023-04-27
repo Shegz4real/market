@@ -81,8 +81,7 @@ exports.loginUser = async(req, res)=>{
 
 exports.getProfileInfo = async(req, res)=>{
     
-    
-    
+
     try{
         
         if(!req.session.authorized){    //validate if the user is signed in
