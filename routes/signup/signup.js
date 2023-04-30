@@ -7,8 +7,10 @@ const venController = require("../../controllers/venController");
 router.get('/', (req, res)=>{
     if(req.session.authorized){
        res.redirect('/logout'); 
+    }else{
+        res.send(`this is the signup page`);
     }
-    res.send(`this is the signup page`);
+    
 });
 router.post('/',userConntroller.createUser);
 

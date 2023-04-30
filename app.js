@@ -16,12 +16,14 @@ const logout = require('./routes/logout/logout');
  
 
 app.use(session({
-    resave:"",
+    resave:"true",
     secret:"imnotinlovewithanyone",
+    saveUnitialized:"true",
     cookie:{
-        sameSite:"strict",
+        sameSite:"strict",    
     }
 }));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
