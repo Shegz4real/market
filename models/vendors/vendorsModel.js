@@ -4,9 +4,11 @@ const vendorSchema = mongoose.Schema({
 
     firstName: {type:String, required: true,},
     lastName: {type: String, required:true},
+    email:{type: String, required:true},
     business_Name:{type: String, unique: true, required: true},
-    image:{type:String,},
-    DOB:{type: String, required: true}
+    image:{type:String },
+    DOB:{type: String, required: true},
+    isAdmin:{type:Boolean, default:false}
     
 });
 

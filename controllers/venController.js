@@ -1,17 +1,20 @@
 const Vend = require("../models/vendors/vendorsModel");
+const bcrypt = require("bcrypt");
+const hasher = require("userController");
+
+
 
 //@desc     create a new vendor acct
 //@route    /signup/vendor
 
 exports.createVendor = async(req, res)=>{
-
+    
     try{
-
+        
         const vendor = new Vend(req.body);
+        vendor.password = hasher.hashedPassword(req.body.password);
         await vendor.save();
-        req.session.vendor = vendor;
-        req.session.authorized = true;
-        res.redirect('/vendor')
+        
 
     }catch(err){
         console.log(err);

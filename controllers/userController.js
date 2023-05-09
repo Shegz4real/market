@@ -1,7 +1,8 @@
 const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken');
 const User = require("../models/users/usersModel");
 
-
+//hsshing passwords with bcrypt
 function hashPassword(password){
     const saltRoudnds = 10;
     return bcrypt.hashSync(password, saltRoudnds);
@@ -9,13 +10,11 @@ function hashPassword(password){
  
 //function that verifies a user already exist
 async function userExist(email){
-
     try{
         const user = await User.findOne({email});
-        console.log(user);
         return !!user;
-    }catch(err){
 
+    }catch(err){
         console.log(err);
         return false;
     }
@@ -40,19 +39,21 @@ exports.createUser = async(req, res)=>{
             email:req.body.email,
             password:hashPassword(req.body.password)
         });
+       
+        //prevent user from signing in with an email already existing on the database
         console.log(userExist(user.email));
-
+        // if(userExist(user.email)){
+        //     res.status(200).redirect('/signup')
+        // };
+        
         await user.save();
-        req.session.user = user;
+        req.session.user = user; 
         req.session.authorized = true;
-        res.send({data:user});
+        res.redirect("/");
        
     }catch(err){
         console.log(err);
-    }
-        
-   
-    
+    } 
 }
 
 //@desc   for userlogin
@@ -64,20 +65,24 @@ exports.loginUser = async(req, res)=>{
     
     
     try{
+
         const user = await User.findOne({email});
         const isValidPassword = bcrypt.compareSync(password, user.password);
-        console.log(isValidPassword);
-
-        if(!user){
-            return res.redirect('/login');
+        const {password2, ...others} = user; //OTHERS MEANS ANY OTHER ITEM SAVE THE PASSWORD
         
-        }
-        if(!isValidPassword){
-            return res.status(401).redirect('/login');
-        }
 
+        !user && res.status(200).redirect('/login');
+
+        !isValidPassword && res.status(401).redirect('/login');
+        
         req.session.user = user; 
         req.session.authorized = true;
+
+        //using jwt token
+        const accessToken = jwt.sign({
+            id: user._id,
+            isAdmin: user.isAdmin,
+        }, process.env.JWT_SEC, {expiresIn:"3d"});
         res.redirect('/');
         
 
