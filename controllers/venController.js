@@ -1,6 +1,6 @@
 const Vend = require("../models/vendors/vendorsModel");
 const bcrypt = require("bcrypt");
-const hasher = require("userController");
+const hasher = require("./userController");
 
 
 

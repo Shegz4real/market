@@ -1,8 +1,17 @@
+/*
+    users can:
+        login
+        signup
+        search for items and available vendors
+        rate vendor services
+         
+*/
+
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 const User = require("../models/users/usersModel");
 
-//hsshing passwords with bcrypt
+//hashing passwords with bcrypt
 function hashPassword(password){
     const saltRoudnds = 10;
     return bcrypt.hashSync(password, saltRoudnds);
@@ -12,11 +21,12 @@ function hashPassword(password){
 async function userExist(email){
     try{
         const user = await User.findOne({email});
+        if(!user){
+            console.log(`user dosent exist`)
+        }
         return !!user;
 
     }catch(err){
-        console.log(err);
-        return false;
     }
 }
 
@@ -41,20 +51,25 @@ exports.createUser = async(req, res)=>{
         });
        
         //prevent user from signing in with an email already existing on the database
-        console.log(userExist(user.email));
-        // if(userExist(user.email)){
-        //     res.status(200).redirect('/signup')
-        // };
+        const val = await userExist(user.email);
         
-        await user.save();
-        req.session.user = user; 
-        req.session.authorized = true;
-        res.redirect("/");
+        if(val){
+            res.status(200).redirect('/login');
+        }else{
+            
+            await user.save();
+            req.session.user = user; 
+            req.session.authorized = true;
+            res.redirect("/");
+        }
+
+            
        
     }catch(err){
         console.log(err);
     } 
 }
+
 
 //@desc   for userlogin
 //@route   /login
@@ -62,11 +77,16 @@ exports.createUser = async(req, res)=>{
 exports.loginUser = async(req, res)=>{
 
     const {email, password}  = req.body;
-    
+    console.log(`${email}, ${password}`);
     
     try{
 
         const user = await User.findOne({email});
+
+        if (!user){//verify if user is returning a null value
+            return res.status(200).redirect('/login');
+        }
+
         const isValidPassword = bcrypt.compareSync(password, user.password);
         const {password2, ...others} = user; //OTHERS MEANS ANY OTHER ITEM SAVE THE PASSWORD
         
