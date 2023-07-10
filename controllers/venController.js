@@ -77,9 +77,9 @@ exports.loginVendor = async(req, res)=>{
     }
 }
 
-//@desc list all products of the vendor
-//@route = vendor/:id/products
-exports.venProducts = async(req, res)=>{
+//@desc display vendor dashboard
+//@route = vendor/:id
+exports.venDashboard = async(req, res)=>{
 
 };
 

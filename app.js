@@ -8,7 +8,7 @@ dotenv.config();
 
 const connectDB = require('./models/connectDB');
 
-//route middlewares
+//route dir
 const users = require(`./routes/users/usersRoute`);
 const admin = require('./routes/admin/adminRoute');
 const vendors = require('./routes/vendors/vendorRoute');
@@ -55,3 +55,4 @@ mongoose.connection.once('open', ()=>{
     });
 });
 
+  
