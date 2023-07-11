@@ -12,7 +12,7 @@ router.get('/', (req, res)=>{
 });
 
 
-router.get('/:id', venController.venProducts);
+//router.get('/:id', venController.venProducts);
 
 router.get('/:id/products/add', (req, res)=>{
     res.send(`this is the list of your products`);
