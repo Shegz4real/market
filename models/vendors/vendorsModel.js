@@ -9,7 +9,7 @@ const vendorSchema = mongoose.Schema({
     // business_Name:{type: String, unique: true, required: true},
     // image:{type:String },
     // DOB:{type: String, required: true},
-    isAdmin:{type:Boolean, default:false}
+    isAdmin:{type:Boolean, default:false},
     
 });
 

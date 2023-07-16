@@ -17,7 +17,7 @@ const User = require("../models/users/usersModel");
  
 //@desc    admin to view the list of users
 //@route   admin/users/
-exports.findUser = async(req, res)=>{
+exports.getUsers = async(req, res)=>{
     const user = await User.find();
     res.status(200).json({data:user});;
 }
