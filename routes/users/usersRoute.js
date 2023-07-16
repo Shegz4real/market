@@ -1,12 +1,11 @@
 const express = require('express');
-const userController = require('../../controllers/userController')
+const {getProfileInfo }= require('../../controllers/userController');
+const {verifyTokenAndAuthorization} = require('../../controllers/verify')
 const router = express.Router();
 
 
 
-router.get('/', userController.getProfileInfo);
-
-router.put(`/:id`)
+router.get('/:id', verifyTokenAndAuthorization ,getProfileInfo);
 
 module.exports = router;
 

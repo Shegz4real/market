@@ -1,6 +1,6 @@
 const express = require("express");
 const  router = express.Router();
-const userConntroller = require("../../controllers/userController");
+const {createUser} = require("../../controllers/userController");
 const venController = require("../../controllers/venController");
 
 //@desc     user signup route
@@ -12,7 +12,8 @@ router.get('/', (req, res)=>{
     }
     
 });
-router.post('/',userConntroller.createUser);
+
+router.post('/', createUser);
 
 //@desc     vendor signup route
 router.get('/vendor', (req, res)=>{

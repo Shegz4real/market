@@ -42,10 +42,7 @@ exports.createUser = async(req, res)=>{
 
         const user = new User(req.body);
         user.password = hash.hashPassword(req.body.password)
-       
         await user.save();
-        req.session.user = user; 
-        req.session.authorized = true;
         res.status(200).json(user);
           
     }catch(err){
@@ -59,21 +56,18 @@ exports.createUser = async(req, res)=>{
 
 exports.loginUser = async(req, res)=>{
 
-    const {email, password}  = req.body;
-    console.log(`${email}, ${password}`);
     
     try{
 
-        const user = await User.findOne({email});
+        const user = await User.findOne({email:req.body.email});
         !user &&  res.status(401).json('user does not exist');//verify if user is returning a null value
-        const isValidPassword = bcrypt.compareSync(password, user.password);
-        const {password2, ...others} = user._doc; //OTHERS MEANS ANY OTHER ITEM SAVE THE PASSWORD
+        const isValidPassword = bcrypt.compareSync(req.body.password, user.password);
+        
+        const {password, ...others} = user._doc; //OTHERS MEANS ANY OTHER ITEM SAVE THE PASSWORD
+        console.log(...others)
         
         !isValidPassword && res.status(401).json('invalid password');
         
-        req.session.user = user; 
-        req.session.authorized = true;
-
         //using jwt token
         const accessToken = jwt.sign({
             id: user._id,
@@ -82,7 +76,7 @@ exports.loginUser = async(req, res)=>{
         {expiresIn:"3d"}  );
 
         console.log(accessToken);
-        res.status(200).json(...others, accessToken);
+        res.status(200).json({...others, accessToken});
         
 
     }catch(err){
@@ -95,16 +89,10 @@ exports.loginUser = async(req, res)=>{
 //@desc  /users/profile
 
 exports.getProfileInfo = async(req, res)=>{
-    
-    const session_id = req.session.user._id;
-    
-    try{
-        
-        if(!req.session.authorized){    //validate if the user is signed in
-            res.status(405).json('not signed in')
-        }
-        
-        const user =  await User.findById(session_id);//pass the user id to pull out info
+      
+    try{     
+
+        const user =  await User.findById(req.user.id);//pass the user id to pull out info
         console.log(user.name);
         res.status(200).json(`name: ${user.name} \n email: ${user.email}`);
                 

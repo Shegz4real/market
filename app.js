@@ -18,17 +18,6 @@ const login = require('./routes/login/login');
 const logout = require('./routes/logout/logout');
  
 
-app.use(session({
-
-    resave:"true",
-    secret:process.env.SESSION_SEC,
-    saveUnitialized:"true",
-    cookie:{
-        sameSite:"strict",    
-    }
-    
-}));
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
