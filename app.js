@@ -12,6 +12,7 @@ const connectDB = require('./models/connectDB');
 const users = require(`./routes/users/usersRoute`);
 const admin = require('./routes/admin/adminRoute');
 const vendors = require('./routes/vendors/vendorRoute');
+const product = require('./routes/product/productRoute');
 const logis = require('./routes/logis/logisRoute');
 const signup = require('./routes/signup/signup');
 const login = require('./routes/login/login');
@@ -27,6 +28,7 @@ app.use('/users', users);
 app.use('/admin', admin);
 app.use('/vendor', vendors);
 app.use('/logis', logis);
+app.use('/product', product);
 app.use('/logout', logout)
 
 
