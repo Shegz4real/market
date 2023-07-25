@@ -12,6 +12,10 @@ const orderSchema = new mongoose.Schema({
             quantity:{
                 type:Number,
                 default:1
+            },
+            vendor:{
+                type: String,
+                required:true
             }
             
         }
@@ -20,3 +24,5 @@ const orderSchema = new mongoose.Schema({
     address:{type:Object, required: true},
     status:{type: String, default: "pending"}
 });
+
+module.exports = mongoose.model('order', orderSchema);

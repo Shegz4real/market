@@ -80,15 +80,12 @@ exports.getProfileInfo = async(req, res)=>{
       
     try{     
 
-        const user =  await User.findById(req.user.id);//pass the user id to pull out info
-        if(!user){
-            req.status(401).json('user not found');
-        }
-        console.log(user.name);
-        res.status(200).json(user);
-                
-                
+        const user =  await User.findById(req.params.id);//pass the user id to pull out info
+        !user && req.status(401).json('user not found'); 
+        const {pasword:password, ...others} = user._doc;
+        res.status(200).json({...others});
+                            
     }catch(err){
-       req.status(500).json(err);
+       res.status(500).json(err);
     }
 }
