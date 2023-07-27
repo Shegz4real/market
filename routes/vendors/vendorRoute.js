@@ -1,23 +1,14 @@
 const express = require("express");
-const venController = require('../../controllers/venController')
+const {verifyTokenAndVendor}= require('../../controllers/verify');
+const { getVendorProducts, createProduct } = require("../../controllers/productController");
 const router = express.Router();
 
 
-router.get('/', (req, res)=>{
-    if(req.session.user){
-        res.send('vendor dashboard');
-    }else{
-        res.redirect('/');
-    }
-});
 
 
 //router.get('/:id', venController.venProducts);
 
-router.get('/:id/products/add', (req, res)=>{
-    res.send(`this is the list of your products`);
-})
-
-router.put('/products/add', venController.addItem);
+router.put('/products/add', verifyTokenAndVendor, createProduct);
+router.get('/products/:id', getVendorProducts);
 
 module.exports = router;

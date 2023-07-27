@@ -28,7 +28,14 @@ exports.deleteProduct = async (req, res)=>{
 }
 
 //@desc     to list all products of a given vendor
-//@route    /vendors
-exports.listProduct = async(req, res)=>{
+//@route    /vendors/products
+exports.getVendorProducts = async(req, res)=>{
 
+    try{
+        const products = Prod.find({vendorId: req.params.id});
+        res.status(200).json(products);
+    }catch(err){
+        res.status(500).json(err)
+    }
+    
 }
