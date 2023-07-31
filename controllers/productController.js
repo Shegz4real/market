@@ -39,3 +39,16 @@ exports.getVendorProducts = async(req, res)=>{
     }
     
 }
+//@desc ..... edit product info
+//@route ..... /products/:productId
+
+ exports.editProduct = async (req, res)=>{
+    const product = Prod.findByIdAndUpdate(
+        req.params.id, {
+            $set : req.body,
+        },{new : true});
+    res.status(200).json(product)
+ }
+
+//@desc ..... product search and filter
+//@route ...... product

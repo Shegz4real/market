@@ -38,12 +38,7 @@ exports.createVendor = async(req, res)=>{
         }else{
 
             res.send(`user already exists`);
-        }
-            
-       
-
-        
-        
+        }   
 
     }catch(err){
         console.log(err);
