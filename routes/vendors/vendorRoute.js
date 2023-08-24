@@ -7,8 +7,8 @@ const router = express.Router();
 
 
 //router.get('/:id', venController.venProducts);
-
-router.put('/products/add', verifyTokenAndVendor, createProduct);
-router.get('/products/:id', getVendorProducts);
+router.get('/products/:vendor_id', verifyTokenAndVendor, getVendorProducts)
+router.put('/products/:id', verifyTokenAndVendor, updateProduct);
+router.delete('/products/:id')
 
 module.exports = router;

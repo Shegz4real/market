@@ -78,9 +78,3 @@ exports.venDashboard = async(req, res)=>{
 
 };
 
-//@desc add new item for sale
-//@route /vendor/products/add
-
-exports.addItem = async(req, res)=>{
-
-};

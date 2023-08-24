@@ -89,3 +89,15 @@ exports.getProfileInfo = async(req, res)=>{
        res.status(500).json(err);
     }
 }
+
+//@desc delete user by admin
+//@route .... /admin/users
+
+exports.deleteUser = async (req,res)=>{
+    try{
+        await User.findByIdAndDelete(req.params.id);
+        res.status(200).json("user hasd been deleted");
+    }catch(err){
+        res.status(500).json(err);
+    }
+}
